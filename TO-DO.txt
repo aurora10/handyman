@@ -1,0 +1,7 @@
+- change content to appear that this is not a large company but a one person opearion 
+
+- make contact form work
+
+- Make content SSR
+
+
