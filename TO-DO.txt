@@ -2,7 +2,7 @@
 
 - make contact form work
 
-- map on Contaact page
+
 
 
 
