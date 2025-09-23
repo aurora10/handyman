@@ -1,4 +1,3 @@
-
 "use client"
 
 import type React from "react"
@@ -13,6 +12,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { useState } from "react"
 import { Mail, Phone, MapPin, Clock, CheckCircle } from "lucide-react"
 import Image from "next/image"
+import GoogleMapComponent from "@/components/google-map"
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -139,7 +139,7 @@ export default function ContactPage() {
             </Card>
 
             {/* Contactinformatie */}
-            <div className="space-y-8">
+            <div className="space-.y-8">
               <Card className="p-8">
                 <CardHeader className="px-0 pt-0">
                   <CardTitle className="text-2xl font-bold">Contactgegevens</CardTitle>
@@ -217,7 +217,7 @@ export default function ContactPage() {
           </div>
 
           <div className="bg-muted rounded-lg h-96 flex items-center justify-center ">
-            
+            <GoogleMapComponent />
           </div>
         </div>
       </section>
@@ -276,5 +276,3 @@ export default function ContactPage() {
     </div>
   )
 }
-
-
