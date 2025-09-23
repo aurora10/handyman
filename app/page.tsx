@@ -229,6 +229,12 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import Link from "next/link"
 import { Hammer, Paintbrush, Wrench, Star, CheckCircle } from "lucide-react"
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Home - Uw Klusjesman voor Huis & Kantoor',
+  description: 'Ontdek betrouwbare klusjesman diensten voor schilderwerk, tegelwerk en kleine reparaties in en om het huis. Vraag vandaag nog een vrijblijvende offerte aan!',
+}
 
 export default function HomePage() {
   return (

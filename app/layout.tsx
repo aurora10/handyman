@@ -5,8 +5,12 @@ import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
+  title: {
+    default: 'Klussenbedrijf - Uw Lokale Expert voor Huisreparaties & Verbeteringen',
+    template: '%s | Klussenbedrijf',
+  },
+  description: 'Betrouwbare klusjesman diensten voor al uw huisreparatie-, onderhouds- en verbeteringsbehoeften. Wij bedienen uw lokale gemeenschap met vakmanschap en betaalbare prijzen.',
+  keywords: ['klusjesman', 'huisreparatie', 'huisverbetering', 'lokale klusjesman', 'onderhoud', 'verbouwing', 'reparatiediensten'],
   generator: 'v0.app',
 }
 
