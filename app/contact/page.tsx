@@ -158,7 +158,7 @@ export default function ContactPage() {
                     <Phone className="h-6 w-6 text-accent mr-4 mt-1 flex-shrink-0" />
                     <div>
                       <h4 className="font-semibold mb-1">Telefoon</h4>
-                      <p className="text-muted-foreground">+1 (555) 123-4567</p>
+                      <p className="text-muted-foreground">+32 465 811 031</p>
                       <p className="text-sm text-muted-foreground mt-1">Bel gerust voor overleg of een snelle vraag</p>
                     </div>
                   </div>
@@ -197,7 +197,7 @@ export default function ContactPage() {
                     variant="outline"
                     className="border-accent text-accent hover:bg-accent hover:text-accent-foreground bg-transparent"
                   >
-                    Bel direct: (555) 999-0000
+                    Bel direct: +32 465 811 031
                   </Button>
                 </CardContent>
               </Card>
