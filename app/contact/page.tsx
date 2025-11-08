@@ -1,6 +1,7 @@
 "use client"
 
 import type React from "react"
+import { useCallback } from "react"
 
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
@@ -10,29 +11,55 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { useState } from "react"
-import { Mail, Phone, MapPin, Clock, CheckCircle } from "lucide-react"
+import { Mail, Phone, MapPin, Clock, CheckCircle, AlertCircle } from "lucide-react"
 import Image from "next/image"
 import GoogleMapComponent from "@/components/google-map"
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3"
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    phone: "",
     message: "",
   })
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const { executeRecaptcha } = useGoogleReCaptcha()
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    console.log("Formulier verzonden:", formData)
-    setIsSubmitted(true)
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault()
+      setError(null)
 
-    setTimeout(() => {
-      setIsSubmitted(false)
-      setFormData({ name: "", email: "", phone: "", message: "" })
-    }, 3000)
-  }
+      if (!executeRecaptcha) {
+        console.log("Execute recaptcha not yet available")
+        return
+      }
+
+      const token = await executeRecaptcha("contactForm")
+
+      try {
+        const response = await fetch("/api/contact", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ ...formData, token }),
+        })
+
+        if (response.ok) {
+          setIsSubmitted(true)
+          setFormData({ name: "", email: "", message: "" })
+        } else {
+          const data = await response.json()
+          setError(data.error || "An error occurred while sending the message.")
+        }
+      } catch (error) {
+        setError("An error occurred while sending the message.")
+      }
+    },
+    [executeRecaptcha, formData]
+  )
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
@@ -92,29 +119,17 @@ export default function ContactPage() {
                         />
                       </div>
                       <div>
-                        <Label htmlFor="phone">Telefoon</Label>
+                        <Label htmlFor="email">E-mail *</Label>
                         <Input
-                          id="phone"
-                          name="phone"
-                          type="tel"
-                          value={formData.phone}
+                          id="email"
+                          name="email"
+                          type="email"
+                          required
+                          value={formData.email}
                           onChange={handleChange}
                           className="mt-1"
                         />
                       </div>
-                    </div>
-
-                    <div>
-                      <Label htmlFor="email">E-mail *</Label>
-                      <Input
-                        id="email"
-                        name="email"
-                        type="email"
-                        required
-                        value={formData.email}
-                        onChange={handleChange}
-                        className="mt-1"
-                      />
                     </div>
 
                     <div>
@@ -130,6 +145,13 @@ export default function ContactPage() {
                       />
                     </div>
 
+                    {error && (
+                      <div className="flex items-center text-red-500">
+                        <AlertCircle className="h-5 w-5 mr-2" />
+                        <p>{error}</p>
+                      </div>
+                    )}
+
                     <Button type="submit" size="lg" className="w-full">
                       Verstuur Bericht
                     </Button>
@@ -139,7 +161,7 @@ export default function ContactPage() {
             </Card>
 
             {/* Contactinformatie */}
-            <div className="space-.y-8">
+            <div className="space-y-8">
               <Card className="p-8">
                 <CardHeader className="px-0 pt-0">
                   <CardTitle className="text-2xl font-bold">Contactgegevens</CardTitle>
