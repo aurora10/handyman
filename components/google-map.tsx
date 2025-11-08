@@ -40,7 +40,7 @@ const GoogleMapComponent = () => {
 
   return (
     <LoadScript
-      googleMapsApiKey={process.env.NEXT_PUBLIC_MAP_API || ""}
+      googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ""}
     >
       <GoogleMap
         mapContainerStyle={containerStyle}
