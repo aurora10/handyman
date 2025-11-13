@@ -4,6 +4,7 @@ import { GeistMono } from 'geist/font/mono'
 import { Analytics } from '@vercel/analytics/react'
 import './globals.css'
 import Script from 'next/script'
+import CookieConsentBanner from '@/components/cookie-consent-banner'
 
 export const metadata: Metadata = {
   title: {
@@ -60,6 +61,7 @@ export default function RootLayout({
         </Script>
         {children}
         <Analytics />
+        <CookieConsentBanner />
       </body>
     </html>
   )

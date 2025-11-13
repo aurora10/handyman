@@ -13,6 +13,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { useState } from "react"
 import { Mail, Phone, MapPin, Clock, CheckCircle, AlertCircle } from "lucide-react"
 import Image from "next/image"
+import Link from "next/link"
 import GoogleMapComponent from "@/components/google-map"
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3"
 
@@ -24,12 +25,18 @@ export default function ContactPage() {
   })
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [consent, setConsent] = useState(false)
   const { executeRecaptcha } = useGoogleReCaptcha()
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault()
       setError(null)
+
+      if (!consent) {
+        setError("You must agree to the privacy policy to send a message.")
+        return
+      }
 
       if (!executeRecaptcha) {
         console.log("Execute recaptcha not yet available")
@@ -152,7 +159,25 @@ export default function ContactPage() {
                       </div>
                     )}
 
-                    <Button type="submit" size="lg" className="w-full">
+                    <div className="flex items-start space-x-3">
+                      <input
+                        id="consent"
+                        name="consent"
+                        type="checkbox"
+                        checked={consent}
+                        onChange={(e) => setConsent(e.target.checked)}
+                        className="h-4 w-4 mt-1 text-primary border-gray-300 rounded focus:ring-primary"
+                      />
+                      <Label htmlFor="consent" className="text-sm text-muted-foreground">
+                        I agree to the processing of my personal data as described in the{" "}
+                        <Link href="/privacy-policy" className="underline">
+                          Privacy Policy
+                        </Link>
+                        .
+                      </Label>
+                    </div>
+
+                    <Button type="submit" size="lg" className="w-full" disabled={!consent}>
                       Verstuur Bericht
                     </Button>
                   </form>
